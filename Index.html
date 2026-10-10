@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Number Guessing Game</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0eaff;
+            text-align: center;
+            padding: 30px 15px;
+        }
+
+        .game {
+            background: white;
+            max-width: 400px;
+            margin: auto;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px #d2c7f5;
+        }
+
+        h1 {
+            color: #7655d8;
+        }
+
+        h2 {
+            color: #5c469c;
+        }
+
+        p {
+            color: #555;
+        }
+
+        input {
+            padding: 12px;
+            width: 80%;
+            border: 1px solid #cbbdf5;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-size: 16px;
+        }
+
+        button {
+            background: #7655d8;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        button:hover {
+            background: #5c3fba;
+        }
+
+        .level {
+            background: #faf8ff;
+            border: 1px solid #e4dcff;
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 18px;
+        }
+
+        #result {
+            font-weight: bold;
+            color: #7655d8;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="game">
+    <h1>🎯 Number Guessing Game</h1>
+    <p>Complete all three levels!</p>
+
+    <div class="level">
+        <h2 id="levelTitle">Level 1</h2>
+        <p id="question">Guess the number between 1 and 50.</p>
+
+        <p id="numbers"></p>
+
+        <input type="number" id="guess"
+        placeholder="Enter your guess">
+
+        <br>
+
+        <button onclick="checkGuess()">Submit Guess</button>
+
+        <p id="result"></p>
+
+        <button id="next" onclick="nextLevel()"
+        style="display:none;">Next Level ➜</button>
+
+        <button id="restart" onclick="restartGame()"
+        style="display:none;">Play Again ↻</button>
+    </div>
+</div>
+
+<script>
+    let level = 1;
+
+    const numberLists = [
+        [],
+        [6, 7, 9, 8, 10],
+        [80, 40, 70, 60]
+    ];
+
+    function checkGuess() {
+        let guess = document.getElementById("guess").value;
+        let result = document.getElementById("result");
+
+        if (guess === "") {
+            result.textContent = "Please enter a number!";
+            return;
+        }
+
+        guess = Number(guess);
+
+        if (level === 1) {
+            if (guess === 25) {
+                result.textContent = "🎉 Yes! You win Level 1!";
+            } else {
+                result.textContent = "Sorry! You lose Level 1.";
+            }
+        }
+
+        else if (level === 2) {
+            if (numberLists[1].includes(guess)) {
+                result.textContent =
+                "🎉 You win Level 2! Congratulations!";
+            } else {
+                result.textContent = "Sorry! You lose Level 2.";
+            }
+        }
+
+        else if (level === 3) {
+            if (numberLists[2].includes(guess)) {
+                result.textContent =
+                "🏆 You win Level 3! Good job!";
+            } else {
+                result.textContent =
+                "Sorry! You lose Level 3. Game over!";
+            }
+        }
+
+        document.getElementById("guess").disabled = true;
+        document.querySelector(".level button").disabled = true;
+
+        if (level < 3) {
+            document.getElementById("next").style.display = "inline-block";
+        } else {
+            document.getElementById("restart").style.display = "inline-block";
+        }
+    }
+
+    function nextLevel() {
+        level++;
+
+        document.getElementById("levelTitle").textContent =
+        "Level " + level;
+
+        document.getElementById("guess").value = "";
+        document.getElementById("guess").disabled = false;
+        document.querySelector(".level button").disabled = false;
+
+        document.getElementById("result").textContent = "";
+        document.getElementById("next").style.display = "none";
+
+        if (level === 2) {
+            document.getElementById("question").textContent =
+            "Guess a number from this list:";
+            document.getElementById("numbers").textContent =
+            "[6, 7, 9, 8, 10]";
+        }
+
+        if (level === 3) {
+            document.getElementById("question").textContent =
+            "Guess a number from this list:";
+            document.getElementById("numbers").textContent =
+            "[80, 40, 70, 60]";
+        }
+    }
+
+    function restartGame() {
+        level = 1;
+
+        document.getElementById("levelTitle").textContent = "Level 1";
+        document.getElementById("question").textContent =
+        "Guess the number between 1 and 50.";
+        document.getElementById("numbers").textContent = "";
+
+        document.getElementById("guess").value = "";
+        document.getElementById("guess").disabled = false;
+        document.querySelector(".level button").disabled = false;
+
+        document.getElementById("result").textContent = "";
+        document.getElementById("next").style.display = "none";
+        document.getElementById("restart").style.display = "none";
+    }
+</script>
+
+</body>
+</html>
